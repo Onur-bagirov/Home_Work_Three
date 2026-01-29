@@ -1,14 +1,16 @@
 ﻿using EShopp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EShopp.DAL.Context;
-
-public class EShoppDbContext:DbContext
+namespace EShopp.DAL.Context
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public class EShoppDbContext : DbContext
     {
-        optionsBuilder.UseSqlServer("Data Source=STHQ0128-01;Initial Catalog=EShoppDatabase;User ID=admin;Password=admin;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SHOPALL;Integrated Security=True;");
+        }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
-    public DbSet<Product>Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
 }

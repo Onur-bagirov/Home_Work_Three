@@ -1,13 +1,8 @@
 ﻿using EShopp.Domain.Entities;
-
-namespace EShopp.Aplication.Abstacts;
-
 public interface ICategoryService
 {
-    void AddCategory(Category category);
-    void RemoveCategory(int id);
-    void UpdateCategory(Category category);
+    Task AddCategoryAsync(Category category);
+    Task RemoveCategoryAsync(int id);
     Task<IEnumerable<Category>> GetAllCategoriesAsync();
     Task<Category> GetCategoryByIdAsync(int id);
-
 }

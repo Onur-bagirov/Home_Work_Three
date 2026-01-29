@@ -1,21 +1,25 @@
 ﻿using EShopp.DAL.Context;
-using EShopp.DAL.Respositories.Abstacts;
+using EShopp.DAL.Respositories.Abstracts;
 using EShopp.DAL.Respositories.Concretes;
 
-namespace EShopp.DAL.UnitOfWork;
-
-public class UnitOfWork : IUnitOfWork
+namespace EShopp.DAL.UnitOfWork
 {
-    private readonly EShoppDbContext _context;
-    public ICategoryRepository Categories { get; }
-    public UnitOfWork(EShoppDbContext context)
+    public class UnitOfWork : IUnitOfWork
     {
-        _context = context;
-        Categories = new CategoryRepository(_context);
-    }
-    public async Task<int> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync();
-    }
+        private readonly EShoppDbContext _context;
+        public UnitOfWork(EShoppDbContext context)
+        {
+            _context = context;
 
+            Products = new ProductRepository(_context);
+            Categories = new CategoryRepository(_context);
+        }
+        public IProductRepository Products { get; private set; }
+        public ICategoryRepository Categories { get; private set; }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+    }
 }

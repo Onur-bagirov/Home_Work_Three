@@ -2,7 +2,7 @@
 
 namespace EShopp.DAL.Respositories.Abstracts
 {
-    public interface ICategoryRepository : IGenericRepository<Category>
+    public interface IProductRepository : IGenericRepository<Product>
     {
     }
 }

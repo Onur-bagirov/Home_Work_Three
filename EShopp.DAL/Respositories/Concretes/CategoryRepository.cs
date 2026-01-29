@@ -1,7 +1,6 @@
 ﻿using EShopp.DAL.Context;
-using EShopp.DAL.Respositories.Abstacts;
+using EShopp.DAL.Respositories.Abstracts;
 using EShopp.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace EShopp.DAL.Respositories.Concretes;
 

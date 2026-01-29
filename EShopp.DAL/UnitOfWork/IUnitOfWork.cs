@@ -1,9 +1,12 @@
-﻿using EShopp.DAL.Respositories.Abstacts;
+﻿using EShopp.DAL.Respositories.Abstracts;
+using System.Threading.Tasks;
 
-namespace EShopp.DAL.UnitOfWork;
-
-public interface IUnitOfWork
+namespace EShopp.DAL.UnitOfWork
 {
-    ICategoryRepository Categories {get;}
-    Task<int> SaveChangesAsync();
+    public interface IUnitOfWork
+    {
+        ICategoryRepository Categories { get; }
+        IProductRepository Products { get; }
+        Task<int> SaveChangesAsync();
+    }
 }

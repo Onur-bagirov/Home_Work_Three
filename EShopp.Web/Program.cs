@@ -1,30 +1,35 @@
-using EShopp.Aplication.Abstacts;
+using EShopp.Aplication.Abstracts;
 using EShopp.Aplication.Concretes;
 using EShopp.DAL.Context;
+using EShopp.DAL.Respositories.Abstracts;
+using EShopp.DAL.Respositories.Concretes;
 using EShopp.DAL.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<EShoppDbContext>();
 
-// UnitOfWork
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Service
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

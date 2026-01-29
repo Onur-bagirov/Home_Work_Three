@@ -1,30 +1,29 @@
-﻿using EShopp.Aplication.Abstacts;
-using EShopp.Domain.Entities;
+﻿using EShopp.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-
 namespace EShopp.Web.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
-
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
-
         [HttpGet]
         public IActionResult CreateCategory()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult CreateCategory(Category category)
+        public async Task<IActionResult> CreateCategory(Category category)
         {
-            _categoryService.AddCategory(category);
-            return RedirectToAction("Index", "Home");
+            if (!ModelState.IsValid)
+            {
+                return View(category);
+            }
+
+            await _categoryService.AddCategoryAsync(category);
+            return RedirectToAction("GetAllCategories");
         }
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
@@ -32,12 +31,11 @@ namespace EShopp.Web.Controllers
             var categories = await _categoryService.GetAllCategoriesAsync();
             return View(categories);
         }
-
-        public IActionResult DeleteCategory(int id)
+        [HttpPost]
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            _categoryService.RemoveCategory(id);
+            await _categoryService.RemoveCategoryAsync(id);
             return RedirectToAction("GetAllCategories");
         }
     }
 }
-
