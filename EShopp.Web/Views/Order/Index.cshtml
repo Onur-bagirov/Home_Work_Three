@@ -1,0 +1,39 @@
+﻿@model List<EShopp.Domain.Entities.Order>
+
+<h2>Your Orders</h2>
+
+@if (!Model.Any())
+{
+    <p>You have no orders.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Product?.Name</td> 
+                    <td>@order.Quantity</td>
+                    <td>@order.CreatedDate</td>
+                    <td>
+                        <form asp-action="Remove" asp-controller="Order" method="post">
+                            <input type="hidden" name="id" value="@order.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
