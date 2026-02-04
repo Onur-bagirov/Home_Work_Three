@@ -7,5 +7,6 @@ namespace EShopp.Aplication.Abstracts
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<Product?> GetProductByIdAsync(int id);
         Task RemoveProductAsync(int id);
+        Task UpdateProductAsync(Product product);
     }
 }

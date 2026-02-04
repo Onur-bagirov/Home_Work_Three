@@ -7,5 +7,6 @@ namespace EShopp.Aplication.Abstracts
         Task RemoveOrderAsync(int orderId);
         Task<Order?> GetOrderByIdAsync(int orderId);
         Task<List<Order>> GetAllOrdersAsync();
+        Task UpdateOrderAsync(Order order);
     }
 }

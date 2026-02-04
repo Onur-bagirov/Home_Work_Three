@@ -1,3 +1,4 @@
+using EShopp.Aplication.Abstacts;
 using EShopp.Aplication.Abstracts;
 using EShopp.Aplication.Concretes;
 using EShopp.DAL.Context;
@@ -12,13 +13,14 @@ builder.Services.AddDbContext<EShoppDbContext>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IBuyService, BuyService>();
 
 var app = builder.Build();
 

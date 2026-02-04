@@ -28,5 +28,9 @@ namespace EShopp.Aplication.Concretes
             _unitOfWork.Products.Delete(id);
             await _unitOfWork.SaveChangesAsync();
         }
+        public async Task UpdateProductAsync(Product product)
+        {
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

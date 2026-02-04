@@ -9,11 +9,13 @@ namespace EShopp.Web.Controllers
         {
             _categoryService = categoryService;
         }
+
         [HttpGet]
         public IActionResult CreateCategory()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateCategory(Category category)
         {
@@ -25,12 +27,14 @@ namespace EShopp.Web.Controllers
             await _categoryService.AddCategoryAsync(category);
             return RedirectToAction("GetAllCategories");
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
             return View(categories);
         }
+
         [HttpPost]
         public async Task<IActionResult> DeleteCategory(int id)
         {

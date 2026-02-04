@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using EShopp.DAL.Context;
-
 namespace EShopp.DAL.Respositories.Concretes
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -19,8 +18,11 @@ namespace EShopp.DAL.Respositories.Concretes
         public void Delete(int id)
         {
             var entity = _dbSet.Find(id);
+
             if (entity != null)
+            {
                 _dbSet.Remove(entity);
+            }
         }
         public async Task<IEnumerable<T>> GetAllAsync()
         {

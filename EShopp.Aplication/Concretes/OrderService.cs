@@ -13,16 +13,36 @@ namespace EShopp.Aplication.Concretes
         }
         public async Task AddOrderAsync(Order order)
         {
-            await _context.Orders.AddAsync(order);
+            var existingOrder = await _context.Orders.FirstOrDefaultAsync(o => o.ProductId == order.ProductId);
+
+            if (existingOrder != null)
+            {
+                existingOrder.Quantity += order.Quantity;
+                _context.Orders.Update(existingOrder);
+            }
+            else
+            {
+                await _context.Orders.AddAsync(order);
+            }
+
             await _context.SaveChangesAsync();
         }
         public async Task<Order?> GetOrderByIdAsync(int id)
         {
             return await _context.Orders.Include(o => o.Product).FirstOrDefaultAsync(o => o.Id == id);
         }
+        public async Task<List<Order>> GetAllOrdersAsync()
+        {
+            return await _context.Orders.Include(o => o.Product).ToListAsync();
+        }
+        public async Task UpdateOrderAsync(Order order)
+        {
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+        }
         public async Task RemoveOrderAsync(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.Include(o => o.Product).FirstOrDefaultAsync(o => o.Id == id);
 
             if (order != null)
             {

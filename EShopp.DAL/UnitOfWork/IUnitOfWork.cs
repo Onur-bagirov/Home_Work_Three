@@ -1,4 +1,5 @@
-﻿using EShopp.DAL.Respositories.Abstracts;
+﻿using EShopp.DAL.Respositories.Abstacts;
+using EShopp.DAL.Respositories.Abstracts;
 namespace EShopp.DAL.UnitOfWork
 {
     public interface IUnitOfWork
@@ -6,6 +7,7 @@ namespace EShopp.DAL.UnitOfWork
         ICategoryRepository Categories { get; }
         IProductRepository Products { get; }
         IOrderRepository Orders { get; }
+        IBuyRepository Buys { get; }
         Task<int> SaveChangesAsync();
     }
 }

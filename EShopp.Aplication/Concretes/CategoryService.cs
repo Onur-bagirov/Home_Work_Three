@@ -1,6 +1,5 @@
 ﻿using EShopp.DAL.UnitOfWork;
 using EShopp.Domain.Entities;
-
 namespace EShopp.Aplication.Concretes
 {
     public class CategoryService : ICategoryService

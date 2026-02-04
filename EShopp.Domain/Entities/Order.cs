@@ -1,4 +1,4 @@
-namespace EShopp.Domain.Entities
+﻿namespace EShopp.Domain.Entities
 {
     public class Order
     {
