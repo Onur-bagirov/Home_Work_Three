@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace EShopp.Domain.Entities
 {
     public class Order

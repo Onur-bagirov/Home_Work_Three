@@ -1,7 +1,5 @@
 ﻿using EShopp.Aplication.Abstracts;
-using EShopp.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-
 namespace EShopp.Web.Controllers
 {
     public class OrderController : Controller
@@ -27,7 +25,6 @@ namespace EShopp.Web.Controllers
 
             await _orderService.AddOrderAsync(order);
 
-            TempData["Message"] = "Product added to cart!";
             return RedirectToAction("Index");
         }
         [HttpPost]

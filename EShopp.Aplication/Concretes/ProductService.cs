@@ -1,7 +1,6 @@
 ﻿using EShopp.Aplication.Abstracts;
 using EShopp.DAL.UnitOfWork;
 using EShopp.Domain.Entities;
-
 namespace EShopp.Aplication.Concretes
 {
     public class ProductService : IProductService

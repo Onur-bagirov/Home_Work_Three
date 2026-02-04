@@ -1,6 +1,5 @@
 ﻿using EShopp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-
 namespace EShopp.DAL.Context
 {
     public class EShoppDbContext : DbContext

@@ -2,7 +2,6 @@
 using EShopp.DAL.Context;
 using EShopp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-
 namespace EShopp.Aplication.Concretes
 {
     public class OrderService : IOrderService
@@ -30,10 +29,6 @@ namespace EShopp.Aplication.Concretes
                 _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
             }
-        }
-        public async Task<List<Order>> GetAllOrdersAsync()
-        {
-            return await _context.Orders.Include(o => o.Product).ToListAsync();
         }
     }
 }
