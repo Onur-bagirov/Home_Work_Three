@@ -59,9 +59,10 @@ namespace EShopp.Web.Controllers
                 return NotFound();
             }
 
-            if(product.StockQuantity <= 0)
+            if (product.StockQuantity < quantity)
             {
-                return RedirectToAction("Index");
+                TempData["Message"] = "Not enough stock";
+                return RedirectToAction("GetAllProducts");
             }
 
             await _productService.UpdateProductAsync(product);
@@ -76,10 +77,52 @@ namespace EShopp.Web.Controllers
             }
             else
             {
-                var order = new Order { ProductId = product.Id, Quantity = quantity };
+                var order = new Order 
+                { 
+                    ProductId = product.Id, 
+                    Quantity = quantity 
+                };
+
                 await _orderService.AddOrderAsync(order);
             }
 
+            return RedirectToAction("GetAllProducts");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IncreaseQuantity(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.StockQuantity++;
+
+            await _productService.UpdateProductAsync(product);
+            return RedirectToAction("GetAllProducts");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DecreaseQuantity(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (product.StockQuantity <= 0)
+            {
+                return RedirectToAction("GetAllProducts");
+            }
+
+            product.StockQuantity--;
+
+            await _productService.UpdateProductAsync(product);
             return RedirectToAction("GetAllProducts");
         }
     }
