@@ -22,7 +22,6 @@ namespace EShopp.Web.Controllers
             if (!ModelState.IsValid)
             {
                 return View(category);
-            }
 
             await _categoryService.AddCategoryAsync(category);
             return RedirectToAction("GetAllCategories");
