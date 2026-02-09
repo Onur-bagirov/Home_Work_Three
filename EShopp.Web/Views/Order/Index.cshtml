@@ -25,7 +25,10 @@ else
                 <th>Price</th>
                 <th style="width:160px;">Quantity</th>
                 <th>Total</th>
-                <th style="width:200px;">Actions</th>
+                @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                {
+                    <th style="width:200px;">Actions</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -36,63 +39,62 @@ else
                     <td>@order.Product?.Name</td>
                     <td>@order.Product?.Price.ToString("C")</td>
                     <td>
-                        <div class="d-flex justify-content-center align-items-center gap-2">
-                            <form asp-controller="Order"
-                                  asp-action="DecreaseQuantity"
-                                  asp-route-id="@order.Id"
-                                  method="post"
-                                  style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-warning btn-sm">-</button>
-                            </form>
+                        @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                        {
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                <form asp-controller="Order"
+                                      asp-action="DecreaseQuantity"
+                                      asp-route-id="@order.Id"
+                                      method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-warning btn-sm">-</button>
+                                </form>
 
-                            <span class="badge bg-primary">@order.Quantity</span>
+                                <span class="badge bg-primary">@order.Quantity</span>
 
-                            <form asp-controller="Order"
-                                  asp-action="IncreaseQuantity"
-                                  asp-route-id="@order.Id"
-                                  method="post"
-                                  style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-success btn-sm">+</button>
-                            </form>
-                        </div>
+                                <form asp-controller="Order"
+                                      asp-action="IncreaseQuantity"
+                                      asp-route-id="@order.Id"
+                                      method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success btn-sm">+</button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Login to edit quantity</span>
+                        }
                     </td>
                     <td>
                         @(order.Product != null
                                         ? (order.Product.Price * order.Quantity).ToString("C")
                                         : "$0")
                     </td>
-                    <td>
-                        <div class="d-flex justify-content-center gap-2">
-                            <form asp-controller="Order"
-                                  asp-action="Remove"
-                                  asp-route-id="@order.Id"
-                                  method="post"
-                                  style="display:inline;"
-                                  onsubmit="return confirm('Bu məhsulu səbətdən silmək istədiyinizə əminsiniz?');">
+                    @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                    {
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <form asp-controller="Order"
+                                      asp-action="Remove"
+                                      asp-route-id="@order.Id"
+                                      method="post"
+                                      onsubmit="return confirm('Bu məhsulu səbətdən silmək istədiyinizə əminsiniz?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm">🗑️ Remove</button>
+                                </form>
 
-                                @Html.AntiForgeryToken()
-
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    🗑️ Remove
-                                </button>
-                            </form>
-                            <form asp-controller="Order"
-                                  asp-action="Buy"
-                                  asp-route-id="@order.Id"
-                                  method="post"
-                                  style="display:inline;"
-                                  onsubmit="return confirm('Bu məhsulu almaq istədiyinizə əminsiniz?');">
-
-                                @Html.AntiForgeryToken()
-
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    💰 Buy
-                                </button>
-                            </form>
-                        </div>
-                    </td>
+                                <form asp-controller="Order"
+                                      asp-action="Buy"
+                                      asp-route-id="@order.Id"
+                                      method="post"
+                                      onsubmit="return confirm('Bu məhsulu almaq istədiyinizə əminsiniz?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success btn-sm">💰 Buy</button>
+                                </form>
+                            </div>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

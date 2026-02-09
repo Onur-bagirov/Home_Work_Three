@@ -77,10 +77,10 @@ namespace EShopp.Web.Controllers
             }
             else
             {
-                var order = new Order 
-                { 
-                    ProductId = product.Id, 
-                    Quantity = quantity 
+                var order = new Order
+                {
+                    ProductId = product.Id,
+                    Quantity = quantity
                 };
 
                 await _orderService.AddOrderAsync(order);

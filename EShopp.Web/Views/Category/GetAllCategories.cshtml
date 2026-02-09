@@ -8,7 +8,10 @@
             <th style="width: 60px;">Id</th>
             <th>Name</th>
             <th>Description</th>
-            <th style="width: 80px;">Actions</th>
+            @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+            {
+                <th style="width: 80px;">Actions</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -18,21 +21,24 @@
                 <td class="text-center">@category.Id</td>
                 <td>@category.Name</td>
                 <td>@category.Description</td>
-                <td class="text-center">
-                    <form asp-controller="Category"
-                          asp-action="DeleteCategory"
-                          asp-route-id="@category.Id"
-                          method="post"
-                          style="display:inline;"
-                          onsubmit="return confirm('Bu kategoriyi silmək istədiyinizə əminsiniz?');">
+                @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                {
+                    <td class="text-center">
+                        <form asp-controller="Category"
+                              asp-action="DeleteCategory"
+                              asp-route-id="@category.Id"
+                              method="post"
+                              style="display:inline;"
+                              onsubmit="return confirm('Bu kategoriyi silmək istədiyinizə əminsiniz?');">
 
-                        @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
 
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            🗑️
-                        </button>
-                    </form>
-                </td>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                🗑️
+                            </button>
+                        </form>
+                    </td>
+                }
             </tr>
         }
     </tbody>

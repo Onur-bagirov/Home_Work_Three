@@ -3,9 +3,9 @@ using EShopp.DAL.Respositories.Abstracts;
 using EShopp.Domain.Entities;
 namespace EShopp.DAL.Respositories.Concretes
 {
-    public class ProductRepository : GenericRepository<Product>, IProductRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        public ProductRepository(EShoppDbContext context) : base(context)
+        public UserRepository(EShoppDbContext context) : base(context)
         {
         }
     }

@@ -9,17 +9,33 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
+
     public IActionResult Index()
     {
+        if (string.IsNullOrEmpty(UserController.LoggedInUser))
+        {
+            return RedirectToAction("Login", "User");
+        }
+
         return View();
     }
+
     public IActionResult Privacy()
     {
+        if (string.IsNullOrEmpty(UserController.LoggedInUser))
+        {
+            return RedirectToAction("Login", "User");
+        }
+
         return View();
     }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        });
     }
 }

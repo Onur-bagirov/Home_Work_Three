@@ -1,19 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using EShopp.Aplication.Abstacts;
+using EShopp.Aplication.Abstracts;
 namespace EShopp.Web.Controllers
 {
     public class BuyController : Controller
     {
         private readonly IBuyService _buyService;
-        public BuyController(IBuyService buyService)
+        private readonly IProductService _productService;
+        public BuyController(IBuyService buyService, IProductService productService)
         {
             _buyService = buyService;
+            _productService = productService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _productService.GetAllProductsAsync();
+            return View(products);
         }
 
         [HttpPost]
@@ -21,11 +26,12 @@ namespace EShopp.Web.Controllers
         {
             if (productId <= 0 || quantity <= 0)
             {
-                return RedirectToAction("GetAllProducts", "Product");
+                return RedirectToAction("Index");
             }
 
             await _buyService.BuyAsync(productId, quantity);
-            return RedirectToAction("GetAllProducts", "Product");
+            TempData["Message"] = "Purchase completed successfully";
+            return RedirectToAction("Index");
         }
     }
 }

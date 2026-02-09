@@ -7,11 +7,12 @@ namespace EShopp.DAL.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=a1tearbm;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;");
+                "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NEWDBNEW;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;");
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Buy> Buys { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -1,12 +1,9 @@
 ﻿@model IEnumerable<Product>
-
 <h2>Products</h2>
-
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-warning">@TempData["Message"]</div>
 }
-
 <table class="table table-bordered table-striped">
     <thead class="table-dark text-center">
         <tr>
@@ -15,7 +12,10 @@
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
-            <th>Actions</th>
+            @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+            {
+                <th>Actions</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -27,28 +27,38 @@
                 <td>@item.Description</td>
                 <td class="text-center">@item.Price</td>
                 <td class="text-center">
-                    <form asp-controller="Product" asp-action="DecreaseQuantity" asp-route-id="@item.Id" method="post" style="display:inline">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-warning btn-sm">−</button>
-                    </form>
+                    @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                    {
+                        <form asp-controller="Product" asp-action="DecreaseQuantity" asp-route-id="@item.Id" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-warning btn-sm">−</button>
+                        </form>
 
-                    <span class="mx-2 fw-bold">@item.StockQuantity</span>
+                        <span class="mx-2 fw-bold">@item.StockQuantity</span>
 
-                    <form asp-controller="Product" asp-action="IncreaseQuantity" asp-route-id="@item.Id" method="post" style="display:inline">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-success btn-sm">+</button>
-                    </form>
+                        <form asp-controller="Product" asp-action="IncreaseQuantity" asp-route-id="@item.Id" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success btn-sm">+</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="fw-bold">@item.StockQuantity</span>
+                    }
                 </td>
-                <td class="text-center">
-                    <form asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@item.Id" method="post" style="display:inline" onsubmit="return confirm('Bu məhsulu silmək istədiyinizə əminsiniz?');">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                    <form asp-controller="Product" asp-action="AddToCart" asp-route-id="@item.Id" method="post" style="display:inline">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
-                    </form>
-                </td>
+                @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                {
+                    <td class="text-center">
+                        <form asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@item.Id" method="post" style="display:inline" onsubmit="return confirm('Bu məhsulu silmək istədiyinizə əminsiniz?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        <form asp-controller="Product" asp-action="AddToCart" asp-route-id="@item.Id" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+                        </form>
+                    </td>
+                }
             </tr>
         }
     </tbody>

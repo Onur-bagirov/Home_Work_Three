@@ -1,0 +1,43 @@
+﻿@model EShopp.Web.Views.ViewModel.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fa-solid fa-right-to-bracket me-2"></i>Login</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-controller="User" asp-action="Login" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label fw-bold small">Username</label>
+                            <input asp-for="UserName" class="form-control" placeholder="e.g. admin" />
+                            <span asp-validation-for="UserName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="UserPassword" class="form-label fw-bold small">Password</label>
+                            <input asp-for="UserPassword" type="password" class="form-control" placeholder="••••••••" />
+                            <span asp-validation-for="UserPassword" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">Login</button>
+                            <a asp-action="Register" class="btn btn-outline-secondary btn-sm">Don't have an account? Register</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

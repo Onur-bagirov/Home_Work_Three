@@ -8,6 +8,7 @@ namespace EShopp.DAL.UnitOfWork
         IProductRepository Products { get; }
         IOrderRepository Orders { get; }
         IBuyRepository Buys { get; }
+        IUserRepository Users { get; }
         Task<int> SaveChangesAsync();
     }
 }

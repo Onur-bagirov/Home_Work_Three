@@ -15,11 +15,13 @@ namespace EShopp.DAL.UnitOfWork
             Categories = new CategoryRepository(_context);
             Orders = new OrderRepository(_context);
             Buys = new BuyRepository(_context);
+            Users = new UserRepository(_context);
         }
         public IProductRepository Products { get; private set; }
         public ICategoryRepository Categories { get; private set; }
         public IOrderRepository Orders {  get; private set; }
         public IBuyRepository Buys { get; private set; }
+        public IUserRepository Users { get; private set; }
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
