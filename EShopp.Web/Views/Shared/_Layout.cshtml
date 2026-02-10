@@ -57,7 +57,7 @@
                                 <a class="nav-link position-relative d-flex align-items-center text-dark hover-effect" asp-controller="Order" asp-action="Index">
                                     <i class="fa-solid fa-cart-shopping fs-5"></i>
                                     <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle shadow-sm" style="font-size: 0.65rem;">
-                                       @((await OrderService.GetAllOrdersAsync()).Count())
+                                        @(OrderService.GetAllOrdersAsync().Result.Count())
                                     </span>
                                     🛒
                                 </a>
