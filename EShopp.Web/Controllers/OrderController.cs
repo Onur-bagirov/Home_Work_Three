@@ -1,5 +1,6 @@
 ﻿using EShopp.Aplication.Abstacts;
 using EShopp.Aplication.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace EShopp.Web.Controllers
 {
@@ -20,6 +21,7 @@ namespace EShopp.Web.Controllers
             return View(orders);
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> IncreaseQuantity(int id)
         {
@@ -48,6 +50,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> DecreaseQuantity(int id)
         {
@@ -72,6 +75,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> Remove(int id)
         {
@@ -80,6 +84,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         public async Task<IActionResult> Buy(int id)
         {

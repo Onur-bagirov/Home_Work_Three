@@ -1,4 +1,5 @@
 ﻿using EShopp.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace EShopp.Web.Controllers
 {
@@ -16,6 +17,7 @@ namespace EShopp.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> CreateCategory(Category category)
         {
@@ -28,6 +30,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("GetAllCategories");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
@@ -35,6 +38,7 @@ namespace EShopp.Web.Controllers
             return View(categories);
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> DeleteCategory(int id)
         {

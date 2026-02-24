@@ -1,11 +1,12 @@
 ﻿using EShopp.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace EShopp.DAL.Context
 {
-    public class EShoppDbContext : DbContext
+    public class EShoppDbContext : IdentityDbContext<User>
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        public EShoppDbContext(DbContextOptions<EShoppDbContext> options) : base(options) 
+        { 
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }

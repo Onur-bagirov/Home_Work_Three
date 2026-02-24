@@ -1,5 +1,6 @@
 ﻿using EShopp.Aplication.Abstracts;
 using EShopp.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace EShopp.Web.Controllers
@@ -16,6 +17,7 @@ namespace EShopp.Web.Controllers
             _orderService = orderService;
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpGet]
         public async Task<IActionResult> CreateProduct()
         {
@@ -23,6 +25,7 @@ namespace EShopp.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(Product product)
         {
@@ -36,12 +39,14 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("GetAllProducts");
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
             return View(products);
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(int id)
         {
@@ -49,6 +54,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("GetAllProducts");
         }
 
+        [Authorize(Roles ="Customer")]
         [HttpPost]
         public async Task<IActionResult> AddToCart(int id, int quantity = 1)
         {
@@ -89,6 +95,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("GetAllProducts");
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> IncreaseQuantity(int id)
         {
@@ -105,6 +112,7 @@ namespace EShopp.Web.Controllers
             return RedirectToAction("GetAllProducts");
         }
 
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<IActionResult> DecreaseQuantity(int id)
         {

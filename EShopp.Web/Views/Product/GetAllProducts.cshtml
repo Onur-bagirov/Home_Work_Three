@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<Product>
+
 <h2>Products</h2>
+
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-warning">@TempData["Message"]</div>
 }
+
 <table class="table table-bordered table-striped">
     <thead class="table-dark text-center">
         <tr>
@@ -12,7 +15,7 @@
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
-            @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+            @if (User.Identity.IsAuthenticated)
             {
                 <th>Actions</th>
             }
@@ -27,7 +30,7 @@
                 <td>@item.Description</td>
                 <td class="text-center">@item.Price</td>
                 <td class="text-center">
-                    @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <form asp-controller="Product" asp-action="DecreaseQuantity" asp-route-id="@item.Id" method="post" style="display:inline">
                             @Html.AntiForgeryToken()
@@ -46,13 +49,15 @@
                         <span class="fw-bold">@item.StockQuantity</span>
                     }
                 </td>
-                @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+
+                @if (User.Identity.IsAuthenticated)
                 {
                     <td class="text-center">
                         <form asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@item.Id" method="post" style="display:inline" onsubmit="return confirm('Bu məhsulu silmək istədiyinizə əminsiniz?');">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
+
                         <form asp-controller="Product" asp-action="AddToCart" asp-route-id="@item.Id" method="post" style="display:inline">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>

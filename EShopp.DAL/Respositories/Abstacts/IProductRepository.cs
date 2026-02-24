@@ -1,10 +1,7 @@
-﻿using EShopp.DAL.Context;
-using EShopp.DAL.Respositories.Concretes;
-using EShopp.Domain.Entities;
+﻿using EShopp.Domain.Entities;
 namespace EShopp.DAL.Respositories.Abstracts
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
     }
-
 }

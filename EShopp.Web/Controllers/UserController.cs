@@ -1,24 +1,30 @@
-﻿using EShopp.DAL.Context;
-using EShopp.Domain.Entities;
+﻿using EShopp.Domain.Entities;
 using EShopp.Web.Models.ViewModel;
 using EShopp.Web.Views.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 namespace EShopp.Web.Controllers
 {
     public class UserController : Controller
     {
-        public static string LoggedInUser { get; set; } = string.Empty;
-        private readonly EShoppDbContext _context;
-        public UserController(EShoppDbContext context)
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public UserController(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
-            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            if (!string.IsNullOrEmpty(LoggedInUser))
+            if (User.Identity!.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -34,63 +40,95 @@ namespace EShopp.Web.Controllers
                 return View(model);
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == model.UserName && u.UserPassword == model.UserPassword);
+            var result = await _signInManager.PasswordSignInAsync(
+                model.UserName,
+                model.UserPassword,
+                false,
+                false);
 
-            if (user == null)
-            {
-                ModelState.AddModelError("", "Username or password is incorrect");
-                return View(model);
-            }
-
-            LoggedInUser = user.UserName;
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult Register()
-        {
-            if (!string.IsNullOrEmpty(LoggedInUser))
+            if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            ModelState.AddModelError("", "Username or password is incorrect");
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Register()
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.Roles = _roleManager.Roles.Select(x => x.Name).ToList();
 
             return View(new ResgisterViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(ResgisterViewModel model)
+        public async Task<IActionResult> Register(ResgisterViewModel model, string selectedRole)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
-            }
-
-            var exists = await _context.Users.AnyAsync(u => u.UserName == model.UserName);
-
-            if (exists)
-            {
-                ModelState.AddModelError("", "This username is already taken.");
+                ViewBag.Roles = _roleManager.Roles.Select(x => x.Name).ToList();
                 return View(model);
             }
 
             var user = new User
             {
+                UserName = model.UserName,
+                Email = model.UserEmail,
                 Name = model.Name,
                 Surname = model.Surname,
-                UserName = model.UserName,
                 UserPassword = model.UserPassword,
-                Email = model.UserEmail
             };
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, model.UserPassword);
+
+            if (result.Succeeded)
+            {
+                string roleToAssign = string.IsNullOrEmpty(selectedRole) ? "Customer" : selectedRole;
+
+                if (!await _roleManager.RoleExistsAsync(roleToAssign))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(roleToAssign));
+                }
+
+                await _userManager.AddToRoleAsync(user, roleToAssign);
+                await _signInManager.SignInAsync(user, false);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            ViewBag.Roles = _roleManager.Roles.Select(x => x.Name).ToList();
+            return View(model);
+        }
+
+        [HttpGet] 
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
 
             return RedirectToAction("Login", "User");
         }
-        public IActionResult Logout()
+
+        [HttpGet]
+        public IActionResult AccessDenied()
         {
-            LoggedInUser = string.Empty;
-            return RedirectToAction("Index", "Home");
+            return View();
         }
     }
 }

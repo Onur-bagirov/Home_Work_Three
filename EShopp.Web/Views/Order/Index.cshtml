@@ -25,7 +25,7 @@ else
                 <th>Price</th>
                 <th style="width:160px;">Quantity</th>
                 <th>Total</th>
-                @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                @if (User.Identity.IsAuthenticated)
                 {
                     <th style="width:200px;">Actions</th>
                 }
@@ -39,7 +39,7 @@ else
                     <td>@order.Product?.Name</td>
                     <td>@order.Product?.Price.ToString("C")</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <div class="d-flex justify-content-center align-items-center gap-2">
                                 <form asp-controller="Order"
@@ -71,7 +71,8 @@ else
                                         ? (order.Product.Price * order.Quantity).ToString("C")
                                         : "$0")
                     </td>
-                    @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <td>
                             <div class="d-flex justify-content-center gap-2">

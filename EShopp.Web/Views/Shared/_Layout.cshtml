@@ -5,15 +5,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebApplication5</title>
+    <title>@ViewData["Title"] - Ogurluq Shop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Ogurluq wop</a>
+                <a class="navbar-brand fw-bold text-primary" asp-controller="Home" asp-action="Index">Ogurluq wop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,7 +22,7 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Category" asp-action="CreateCategory">Create Category</a>
@@ -45,28 +46,31 @@
                                 <a class="nav-link text-dark" asp-controller="Category" asp-action="GetAllCategories">Show Categories</a>
                             </li>
                             <li class="nav-item ms-3">
-                                <a class="nav-link text-dark" asp-controller="User" asp-action="Login">Login</a>
+                                <a class="nav-link text-primary fw-bold" asp-controller="User" asp-action="Login">Login</a>
                             </li>
                         }
                     </ul>
 
-                    @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <ul class="navbar-nav align-items-center">
                             <li class="nav-item me-3">
                                 <a class="nav-link position-relative d-flex align-items-center text-dark hover-effect" asp-controller="Order" asp-action="Index">
                                     <i class="fa-solid fa-cart-shopping fs-5"></i>
                                     <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle shadow-sm" style="font-size: 0.65rem;">
-                                        @(OrderService.GetAllOrdersAsync().Result.Count())
+                                        @{
+                                            var orders = await OrderService.GetAllOrdersAsync();
+                                            var count = orders?.Count() ?? 0;
+                                        }
+                                        @count
                                     </span>
-                                    🛒
                                 </a>
                             </li>
                             <li class="nav-item me-3">
                                 <div class="d-flex align-items-center bg-light px-3 py-1 rounded-pill border shadow-sm">
                                     <i class="fa-regular fa-circle-user text-primary me-2"></i>
                                     <span class="navbar-text fw-bold text-dark p-0">
-                                        Hi, @EShopp.Web.Controllers.UserController.LoggedInUser
+                                        Hi, @User.Identity.Name
                                     </span>
                                 </div>
                             </li>
@@ -76,19 +80,6 @@
                                 </a>
                             </li>
                         </ul>
-                        <style>
-                            .hover-effect:hover {
-                                color: #0d6efd !important;
-                                transform: scale(1.1);
-                                transition: all 0.2s ease;
-                            }
-
-                            .transition-all:hover {
-                                background-color: #dc3545;
-                                color: white !important;
-                                box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
-                            }
-                        </style>
                     }
                 </div>
             </div>
@@ -102,7 +93,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container text-center">
             &copy; 2026 - Bizden Al Pesman ol - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
@@ -111,5 +102,19 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <style>
+        .hover-effect:hover {
+            color: #0d6efd !important;
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        .transition-all:hover {
+            background-color: #dc3545;
+            color: white !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+        }
+    </style>
 </body>
 </html>

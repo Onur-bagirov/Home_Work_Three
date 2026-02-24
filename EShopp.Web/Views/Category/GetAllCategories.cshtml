@@ -8,7 +8,7 @@
             <th style="width: 60px;">Id</th>
             <th>Name</th>
             <th>Description</th>
-            @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 <th style="width: 80px;">Actions</th>
             }
@@ -21,7 +21,8 @@
                 <td class="text-center">@category.Id</td>
                 <td>@category.Name</td>
                 <td>@category.Description</td>
-                @if (!string.IsNullOrEmpty(EShopp.Web.Controllers.UserController.LoggedInUser))
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                 {
                     <td class="text-center">
                         <form asp-controller="Category"

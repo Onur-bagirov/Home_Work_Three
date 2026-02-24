@@ -14,6 +14,7 @@ namespace EShopp.Web.Controllers
             _productService = productService;
         }
 
+        [Authorize(Roles = "Customer")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -21,6 +22,7 @@ namespace EShopp.Web.Controllers
             return View(products);
         }
 
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         public async Task<IActionResult> BuyProduct(int productId, int quantity)
         {

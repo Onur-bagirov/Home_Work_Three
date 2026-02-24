@@ -1,5 +1,4 @@
 ﻿using EShopp.Domain.Entities;
-
 namespace EShopp.Aplication.Abstacts
 {
     public interface  IUserService
